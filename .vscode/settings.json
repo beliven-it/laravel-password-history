@@ -1,0 +1,35 @@
+{
+  // Enable the extension we installed
+  "laravel-pint.enable": true,
+  "laravel-pint.runInLaravelSail": false,
+  "laravel-pint.fallbackToGlobalBin": false,
+  "laravel-pint.enableDebugLogs": false,
+  "laravel-pint.dirtyOnly": false,
+  // "laravel-pint.sailExecutablePath": "vendor/bin/sail",
+  "laravel-pint.preset": "laravel",
+  "laravel-pint.executablePath": "vendor/bin/pint",
+  "laravel-pint.configPath": "pint.json",
+
+  // Define the new formatting extension as the default
+  // formatter for all PHP files
+  "[php]": {
+    "editor.defaultFormatter": "open-southeners.laravel-pint",
+    "editor.formatOnSave": true
+  },
+  "[blade]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "prettier.enable": true,
+  "prettier.requireConfig": true,
+  "prettier.configPath": "./.prettierrc",
+  "prettier.documentSelectors": [
+    "**/*.blade.php",
+    "**/*.html",
+    "**/*.antlers.html"
+  ]
+}

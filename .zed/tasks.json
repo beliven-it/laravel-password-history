@@ -1,0 +1,8 @@
+[
+  {
+    "label": "laravel test $ZED_SYMBOL",
+    "command": "./vendor/bin/pest",
+    "args": ["--filter $ZED_SYMBOL $ZED_RELATIVE_FILE"],
+    "tags": ["phpunit-test", "pest-test"]
+  }
+]
