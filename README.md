@@ -49,9 +49,9 @@ The only value configurable is the depth of the password history. This value is 
 
 ## Usage
 
-The library expose a trait that you can use in your Own model.
+The library allow to apply a trait in your own models.
 
-For example suppose to use it in the User model:
+Let's try to use in the `User` model:
 
 ```php
 <?php
@@ -67,13 +67,20 @@ class User extends Authenticatable
 }
 ```
 
-When you need to create / update a user password you can invoce the trait method `savePassword` like below:
+Now, when you need to create / update a user password instead of saving the password using:
+
+```php
+$user->password = Hash::make($password_from_request);
+$user->save();
+```
+
+instead use the trait method `addPasswordInHistory` like below:
 
 ```php
 $user->addPasswordInHistory($password_from_request);
 ```
 
-You can also check if a password is in the history of the user inside the request:
+You can also use a rule in your request validation:
 
 ```php
 <?php
