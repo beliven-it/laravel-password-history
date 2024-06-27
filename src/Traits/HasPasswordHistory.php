@@ -2,7 +2,6 @@
 
 namespace Beliven\PasswordHistory\Traits;
 
-use Beliven\PasswordHistory\Models\PasswordHash;
 use Beliven\PasswordHistory\PasswordHistory as PasswordHistoryService;
 
 trait HasPasswordHistory
@@ -14,17 +13,10 @@ trait HasPasswordHistory
         return $password_history_service->hasPasswordInHistory($this, $new_password);
     }
 
-    public function addPasswordToHistory(string $new_password): ?PasswordHash
+    public function addPasswordInHistory(string $new_password): void
     {
         $password_history_service = new PasswordHistoryService();
 
-        return $password_history_service->addPasswordToHistory($this, $new_password);
-    }
-
-    public function savePassword(string $password)
-    {
-        $new_password = $this->addPasswordToHistory($password);
-        $this->password = $new_password->hash;
-        $this->save();
+        $password_history_service->addPasswordToHistory($this, $new_password);
     }
 }

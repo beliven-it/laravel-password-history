@@ -2,6 +2,7 @@
 
 namespace Beliven\PasswordHistory;
 
+use Beliven\PasswordHistory\Exceptions\PasswordInHistoryException;
 use Beliven\PasswordHistory\Models\PasswordHash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -44,7 +45,7 @@ class PasswordHistory
         $history_depth = config('password-history.depth');
 
         if ($this->hasPasswordInHistory($model, $new_password)) {
-            throw new \Exception(__('Password already in history'));
+            throw new PasswordInHistoryException();
         }
 
         return DB::transaction(function () use ($model, $new_password, $history_depth) {
@@ -61,6 +62,9 @@ class PasswordHistory
                     $this->removeModelOldestHash($model);
                 }
             }
+
+            $model->password = $password_instance->hash;
+            $model->save();
 
             return $password_instance;
         });

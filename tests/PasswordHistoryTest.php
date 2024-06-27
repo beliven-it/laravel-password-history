@@ -12,6 +12,8 @@ class TestModel extends Model
 
     public $timestamps = false;
 
+    public $password = 'password';
+
     protected $table = 'test_models';
 }
 

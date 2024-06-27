@@ -70,7 +70,7 @@ class User extends Authenticatable
 When you need to create / update a user password you can invoce the trait method `savePassword` like below:
 
 ```php
-$user->savePassword($password_from_request);
+$user->addPasswordInHistory($password_from_request);
 ```
 
 You can also check if a password is in the history of the user inside the request:
