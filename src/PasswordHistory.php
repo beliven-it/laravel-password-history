@@ -51,7 +51,6 @@ class PasswordHistory
         return DB::transaction(function () use ($model, $new_password, $history_depth) {
             $password_instance = new PasswordHash();
             $password_instance->hash = Hash::make($new_password);
-
             $password_instance->model()->associate($model);
             $password_instance->save();
 
@@ -62,9 +61,6 @@ class PasswordHistory
                     $this->removeModelOldestHash($model);
                 }
             }
-
-            $model->password = $password_instance->hash;
-            $model->save();
 
             return $password_instance;
         });

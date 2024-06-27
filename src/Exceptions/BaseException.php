@@ -15,7 +15,7 @@ class BaseException extends Exception
             $value = $message;
         }
 
-        parent::__construct($value, $error->code() ?? 500);
+        parent::__construct($value, $error->code());
     }
 
     /**
