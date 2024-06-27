@@ -5,6 +5,7 @@ namespace Beliven\PasswordHistory\Traits;
 use Beliven\PasswordHistory\PasswordHistory as PasswordHistoryService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 trait HasPasswordHistory
 {
@@ -27,7 +28,7 @@ trait HasPasswordHistory
 
     private static function handleSaving(Model $model)
     {
-        if (!$model->isDirty('password')) {
+        if (!$model->isDirty($model->password_field_column)) {
             return;
         }
 
@@ -49,11 +50,13 @@ trait HasPasswordHistory
     public function __set($key, $value)
     {
         if ($key === $this->password_field_column) {
-            if (is_null($this->plain_text_password)) {
-                $this->plain_text_password = $value;
-            }
+            $this->plain_text_password = $value;
 
-            $this->attributes[$this->password_field_column] = $value;
+            if (in_array($this->password_field_column, $this->casts) && $this->casts[$this->password_field_column] === 'hashed') {
+                $this->attributes[$this->password_field_column] = Hash::make($value);
+            } else {
+                $this->attributes[$this->password_field_column] = $value;
+            }
 
             return;
         }
