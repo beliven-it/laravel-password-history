@@ -21,11 +21,11 @@ describe('Password history using trait methods', function () {
 
     it('should found password already used', function () {
         $model = TestModel::create();
-        $password_hash = new PasswordHash;
-        $password_hash->hash = Hash::make('password');
-        $password_hash->model_type = get_class($model);
-        $password_hash->model_id = $model->id;
-        $password_hash->save();
+        $passwordHash = new PasswordHash;
+        $passwordHash->hash = Hash::make('password');
+        $passwordHash->model_type = get_class($model);
+        $passwordHash->model_id = $model->id;
+        $passwordHash->save();
 
         $result = $this->passwordHistory->hasPasswordInHistory($model, 'password');
         expect($result)->toBeTrue();
@@ -48,11 +48,11 @@ describe('Password history using trait methods', function () {
         $model = TestModel::create();
         $existingPassword = 'existing_password';
 
-        $password_hash = new PasswordHash;
-        $password_hash->hash = Hash::make($existingPassword);
-        $password_hash->model_type = get_class($model);
-        $password_hash->model_id = $model->id;
-        $password_hash->save();
+        $passwordHash = new PasswordHash;
+        $passwordHash->hash = Hash::make($existingPassword);
+        $passwordHash->model_type = get_class($model);
+        $passwordHash->model_id = $model->id;
+        $passwordHash->save();
 
         $this->passwordHistory->addPasswordToHistory($model, $existingPassword);
     })->throws(PasswordInHistoryException::class);
@@ -65,21 +65,21 @@ describe('Password history using trait methods', function () {
         $this->passwordHistory->addPasswordToHistory($model, 'password2');
         $this->passwordHistory->addPasswordToHistory($model, 'password3');
 
-        $valid_password_count = 0;
+        $count = 0;
 
         if ($this->passwordHistory->hasPasswordInHistory($model, 'password1')) {
-            $valid_password_count++;
+            $count++;
         }
 
         if ($this->passwordHistory->hasPasswordInHistory($model, 'password2')) {
-            $valid_password_count++;
+            $count++;
         }
 
         if ($this->passwordHistory->hasPasswordInHistory($model, 'password3')) {
-            $valid_password_count++;
+            $count++;
         }
 
-        expect($valid_password_count)->toBe(2);
+        expect($count)->toBe(2);
     });
 });
 
@@ -95,6 +95,8 @@ describe('Password history via mutator', function () {
             'model_type' => get_class($model),
             'model_id'   => $model->id,
         ]);
+
+        expect($model->password)->not()->toBe('password');
     });
 
     it('should not create alredy used entry', function () {
@@ -110,4 +112,30 @@ describe('Password history via mutator', function () {
         $model->password = 'password';
         $model->save();
     })->throws(PasswordInHistoryException::class);
+});
+
+describe('Password history edge cases', function () {
+    it('should not create an entry using the update quietly method', function () {
+        $model = new TestModelWihTrait;
+        $model->id = 123;
+        $model->save();
+
+        $count = PasswordHash::byModel($model)->count();
+        expect($count)->toBe(0);
+
+        $model->updateQuietly(['password' => 'test']);
+
+        $count = PasswordHash::byModel($model)->count();
+        expect($count)->toBe(0);
+    });
+
+    it('should not create an entry using the save quietly method', function () {
+        $model = new TestModelWihTrait;
+        $model->id = 123;
+        $model->password = 'password';
+        $model->saveQuietly();
+
+        $count = PasswordHash::byModel($model)->count();
+        expect($count)->toBe(0);
+    });
 });

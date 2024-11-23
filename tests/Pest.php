@@ -25,3 +25,18 @@ class TestModelWihTrait extends Model
 
     protected $table = 'test_models';
 }
+
+class TestModelWithCast extends Model
+{
+    use HasPasswordHistory;
+
+    protected $guarded = [];
+
+    public $timestamps = false;
+
+    protected $table = 'test_models';
+
+    protected $casts = [
+        'password' => 'hashed',
+    ];
+}

@@ -2,6 +2,7 @@
 
 namespace Beliven\PasswordHistory\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -29,11 +30,12 @@ class PasswordHash extends Model
         return $this->morphTo('model');
     }
 
-    public function scopeByModel($query, Model $model)
+    public function scopeByModel(Builder $query, Model $model): Builder
     {
         $id = $model->getAttribute('id');
 
-        return $query->where('model_type', $model::class)
+        return $query
+            ->where('model_type', $model::class)
             ->where('model_id', $id);
     }
 }

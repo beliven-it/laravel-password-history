@@ -6,6 +6,7 @@ use Beliven\PasswordHistory\PasswordHistory as PasswordHistoryService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 trait HasPasswordHistory
 {
@@ -13,7 +14,7 @@ trait HasPasswordHistory
 
     private static ?string $plain_text_password = null;
 
-    protected static function bootHasPasswordHistory()
+    protected static function bootHasPasswordHistory(): void
     {
         static::saving(function ($model) {
             if (is_null($model->id)) {
@@ -31,30 +32,30 @@ trait HasPasswordHistory
             set: function ($value) {
                 self::$plain_text_password = $value;
 
-                return $value;
+                return Hash::make($value);
             }
         );
     }
 
-    public function hasPasswordInHistory(string $new_password): bool
+    public function hasPasswordInHistory(string $newPassword): bool
     {
-        $password_history_service = new PasswordHistoryService;
+        $passwordHistoryService = new PasswordHistoryService;
 
-        return $password_history_service->hasPasswordInHistory($this, $new_password);
+        return $passwordHistoryService->hasPasswordInHistory($this, $newPassword);
     }
 
-    public function addPasswordInHistory(string $new_password): void
+    public function addPasswordInHistory(string $newPassword): void
     {
-        $this->savePasswordInHistory($new_password);
+        $this->savePasswordInHistory($newPassword);
     }
 
-    protected function savePasswordInHistory(string $new_password, bool $explicit = true): void
+    protected function savePasswordInHistory(string $newPassword, bool $explicit = true): void
     {
-        DB::transaction(function () use ($new_password, $explicit) {
-            $password_history_service = new PasswordHistoryService;
-            $password_entry = $password_history_service->addPasswordToHistory($this, $new_password);
+        DB::transaction(function () use ($newPassword, $explicit) {
+            $passwordHistoryService = new PasswordHistoryService;
+            $passwordEntry = $passwordHistoryService->addPasswordToHistory($this, $newPassword);
 
-            $this[$this->password_field_column] = $password_entry->hash;
+            $this[$this->password_field_column] = $passwordEntry->hash;
 
             if ($explicit) {
                 $this->save();

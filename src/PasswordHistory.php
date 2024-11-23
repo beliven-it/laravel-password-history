@@ -12,27 +12,27 @@ class PasswordHistory
 {
     private function getModelPasswordHistoryCount(Model $model): int
     {
-        return PasswordHash::query()->byModel($model)->count();
+        return PasswordHash::byModel($model)->count();
     }
 
     private function removeModelOldestHash(Model $model): void
     {
-        PasswordHash::orderBy('created_at', 'asc')
-            ->byModel($model)
+        PasswordHash::byModel($model)
+            ->orderBy('created_at', 'asc')
             ->first()
             ->delete();
     }
 
-    public function hasPasswordInHistory(Model $model, string $new_password): bool
+    public function hasPasswordInHistory(Model $model, string $newPassword): bool
     {
-        $list_of_passwords = PasswordHash::query()
+        $listOfPasswords = PasswordHash::query()
             ->whereHasMorph('model', $model::class)
             ->get();
 
-        foreach ($list_of_passwords as $password) {
+        foreach ($listOfPasswords as $password) {
             $hash = $password->getAttribute('hash');
 
-            if (Hash::check($new_password, $hash)) {
+            if (Hash::check($newPassword, $hash)) {
                 return true;
             }
         }
@@ -40,24 +40,24 @@ class PasswordHistory
         return false;
     }
 
-    public function addPasswordToHistory(Model $model, string $new_password): ?PasswordHash
+    public function addPasswordToHistory(Model $model, string $newPassword): ?PasswordHash
     {
-        $history_depth = config('password-history.depth');
+        $historyDepth = config('password-history.depth');
 
-        if ($this->hasPasswordInHistory($model, $new_password)) {
+        if ($this->hasPasswordInHistory($model, $newPassword)) {
             throw new PasswordInHistoryException;
         }
 
-        return DB::transaction(function () use ($model, $new_password, $history_depth) {
+        return DB::transaction(function () use ($model, $newPassword, $historyDepth) {
             $password_instance = new PasswordHash;
-            $password_instance->hash = Hash::make($new_password);
+            $password_instance->hash = Hash::make($newPassword);
             $password_instance->model()->associate($model);
             $password_instance->save();
 
-            $password_history_count = $this->getModelPasswordHistoryCount($model);
+            $passwordHistoryCount = $this->getModelPasswordHistoryCount($model);
 
-            if ($history_depth > 0) {
-                if ($password_history_count > $history_depth) {
+            if ($historyDepth > 0) {
+                if ($passwordHistoryCount > $historyDepth) {
                     $this->removeModelOldestHash($model);
                 }
             }
