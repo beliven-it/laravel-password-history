@@ -67,14 +67,14 @@ class User extends Authenticatable
 }
 ```
 
-Now, when you need to create / update a user password instead of saving the password using:
+Now, when you need to create / update a user password you can use the following procedure:
 
 ```php
-$user->password = Hash::make($password_from_request);
+$user->password = $password_from_request;
 $user->save();
 ```
 
-instead use the trait method `addPasswordInHistory` like below:
+or instead use the trait method `addPasswordInHistory` like below:
 
 ```php
 $user->addPasswordInHistory($password_from_request);
