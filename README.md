@@ -80,6 +80,9 @@ or instead use the trait method `addPasswordInHistory` like below:
 $user->addPasswordInHistory($password_from_request);
 ```
 
+Both of these methods throws an exception if the password is already in the history. So make sure to catch it.
+
+
 You can also use a rule in your request validation:
 
 ```php
