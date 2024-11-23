@@ -38,7 +38,7 @@ trait HasPasswordHistory
 
     public function hasPasswordInHistory(string $new_password): bool
     {
-        $password_history_service = new PasswordHistoryService();
+        $password_history_service = new PasswordHistoryService;
 
         return $password_history_service->hasPasswordInHistory($this, $new_password);
     }
@@ -51,7 +51,7 @@ trait HasPasswordHistory
     protected function savePasswordInHistory(string $new_password, bool $explicit = true): void
     {
         DB::transaction(function () use ($new_password, $explicit) {
-            $password_history_service = new PasswordHistoryService();
+            $password_history_service = new PasswordHistoryService;
             $password_entry = $password_history_service->addPasswordToHistory($this, $new_password);
 
             $this[$this->password_field_column] = $password_entry->hash;

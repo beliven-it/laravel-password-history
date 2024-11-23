@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 
 beforeEach(function () {
-    $this->passwordHistory = new PasswordHistory();
+    $this->passwordHistory = new PasswordHistory;
 
     Config::set('password-history.depth', 5);
 });
@@ -21,7 +21,7 @@ describe('Password history using trait methods', function () {
 
     it('should found password already used', function () {
         $model = TestModel::create();
-        $password_hash = new PasswordHash();
+        $password_hash = new PasswordHash;
         $password_hash->hash = Hash::make('password');
         $password_hash->model_type = get_class($model);
         $password_hash->model_id = $model->id;
@@ -48,7 +48,7 @@ describe('Password history using trait methods', function () {
         $model = TestModel::create();
         $existingPassword = 'existing_password';
 
-        $password_hash = new PasswordHash();
+        $password_hash = new PasswordHash;
         $password_hash->hash = Hash::make($existingPassword);
         $password_hash->model_type = get_class($model);
         $password_hash->model_id = $model->id;
@@ -85,7 +85,7 @@ describe('Password history using trait methods', function () {
 
 describe('Password history via mutator', function () {
     it('should create a password entry', function () {
-        $model = new TestModelWihTrait();
+        $model = new TestModelWihTrait;
         $model->password = 'password';
         $model->id = 123;
 
@@ -98,7 +98,7 @@ describe('Password history via mutator', function () {
     });
 
     it('should not create alredy used entry', function () {
-        $model = new TestModelWihTrait();
+        $model = new TestModelWihTrait;
         $model->id = 123;
 
         $model->password = 'password';

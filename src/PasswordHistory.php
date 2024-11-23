@@ -45,11 +45,11 @@ class PasswordHistory
         $history_depth = config('password-history.depth');
 
         if ($this->hasPasswordInHistory($model, $new_password)) {
-            throw new PasswordInHistoryException();
+            throw new PasswordInHistoryException;
         }
 
         return DB::transaction(function () use ($model, $new_password, $history_depth) {
-            $password_instance = new PasswordHash();
+            $password_instance = new PasswordHash;
             $password_instance->hash = Hash::make($new_password);
             $password_instance->model()->associate($model);
             $password_instance->save();
