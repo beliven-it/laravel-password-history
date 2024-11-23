@@ -20,6 +20,7 @@ class TestCase extends Orchestra
 
         Schema::create('test_models', function ($table) {
             $table->id();
+            $table->string('password')->nullable();
             $table->timestamps();
         });
 
