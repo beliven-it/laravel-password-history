@@ -42,6 +42,9 @@ describe('Password history using trait methods', function () {
             'model_type' => get_class($model),
             'model_id'   => $model->id,
         ]);
+
+        $match = Hash::check('new_password', $passwordHash->hash);
+        expect($match)->toBeTrue();
     });
 
     it('should prevent the creation of a password already used', function () {
@@ -97,6 +100,9 @@ describe('Password history via mutator', function () {
         ]);
 
         expect($model->password)->not()->toBe('password');
+
+        $match = Hash::check('password', $model->password);
+        expect($match)->toBeTrue();
     });
 
     it('should not create alredy used entry', function () {
@@ -137,5 +143,18 @@ describe('Password history edge cases', function () {
 
         $count = PasswordHash::byModel($model)->count();
         expect($count)->toBe(0);
+    });
+
+    test('simulate password change', function () {
+        $model = new TestModelWihTrait;
+        $model->id = 123;
+        $model->save();
+
+        $model->password = 'password';
+        $model->save();
+
+        $match = Hash::check('password', $model->password);
+
+        expect($match)->toBeTrue();
     });
 });

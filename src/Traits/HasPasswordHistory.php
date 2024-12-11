@@ -31,8 +31,9 @@ trait HasPasswordHistory
         return Attribute::make(
             set: function ($value) {
                 self::$plain_text_password = $value;
+                $hash = Hash::make($value);
 
-                return Hash::make($value);
+                return $hash;
             }
         );
     }
@@ -55,9 +56,8 @@ trait HasPasswordHistory
             $passwordHistoryService = new PasswordHistoryService;
             $passwordEntry = $passwordHistoryService->addPasswordToHistory($this, $newPassword);
 
-            $this[$this->password_field_column] = $passwordEntry->hash;
-
             if ($explicit) {
+                $this[$this->password_field_column] = $passwordEntry->hash;
                 $this->save();
             }
         });
