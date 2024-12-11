@@ -31,8 +31,8 @@ class TestCase extends Orchestra
 
     protected function tearDown(): void
     {
-        Schema::dropIfExists('test_models');
-        Schema::dropIfExists('password_hashes');
+        // Schema::dropIfExists('test_models');
+        // Schema::dropIfExists('password_hashes');
 
         parent::tearDown();
     }
