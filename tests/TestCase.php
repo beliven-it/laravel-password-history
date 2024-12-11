@@ -4,13 +4,13 @@ namespace Beliven\PasswordHistory\Tests;
 
 use Beliven\PasswordHistory\PasswordHistoryServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -31,8 +31,8 @@ class TestCase extends Orchestra
 
     protected function tearDown(): void
     {
-        // Schema::dropIfExists('test_models');
-        // Schema::dropIfExists('password_hashes');
+        Schema::dropIfExists('test_models');
+        Schema::dropIfExists('password_hashes');
 
         parent::tearDown();
     }
