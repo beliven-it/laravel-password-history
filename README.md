@@ -55,7 +55,7 @@ use Beliven\PasswordHistory\Traits\HasPasswordHistory;
 class User extends Authenticatable
 {
     use HasPasswordHistory;
-    // ... other stuff
+    // ... other code
 }
 ```
 
