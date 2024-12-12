@@ -1,13 +1,16 @@
 {
   "name": "beliven-it/laravel-password-history",
   "description": "A small package for implements a password history",
-  "keywords": ["beliven-it", "laravel", "laravel-password-history"],
+  "keywords": [
+    "beliven-it",
+    "laravel",
+    "laravel-password-history"
+  ],
   "homepage": "https://github.com/beliven-it/laravel-password-history",
   "license": "MIT",
   "authors": [
     {
       "name": "Fabrizio Gortani",
-      "email": "fabrizio.gortani@beliven.com",
       "role": "Developer"
     }
   ],
@@ -68,7 +71,9 @@
   },
   "extra": {
     "laravel": {
-      "providers": ["Beliven\\PasswordHistory\\PasswordHistoryServiceProvider"],
+      "providers": [
+        "Beliven\\PasswordHistory\\PasswordHistoryServiceProvider"
+      ],
       "aliases": {
         "PasswordHistory": "Beliven\\PasswordHistory\\Facades\\PasswordHistory"
       }
