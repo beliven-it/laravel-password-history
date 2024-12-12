@@ -12,12 +12,16 @@ trait HasPasswordHistory
 
     private static ?string $plain_text_password = null;
 
-    protected function casts(): array
+    protected function traitCasts(): array
     {
         return [
-            ...parent::casts(),
             $this->password_field_column => 'hashed',
         ];
+    }
+
+    public function getCasts(): array
+    {
+        return array_merge(parent::getCasts(), $this->traitCasts());
     }
 
     protected static function bootHasPasswordHistory(): void
