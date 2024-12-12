@@ -4,10 +4,10 @@ namespace Beliven\PasswordHistory\Exceptions;
 
 use Beliven\PasswordHistory\Entities\Enums\DomainErrorsEnum;
 
-class MissingGetPasswordFieldColumnMethodException extends BaseException
+class PasswordAlreadyHashedException extends BaseException
 {
     public function __construct()
     {
-        parent::__construct(DomainErrorsEnum::MISSING_GET_PASSWORD_FIELD_COLUMN_METHOD);
+        parent::__construct(DomainErrorsEnum::PASSWORD_ALREADY_HASHED);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Beliven\PasswordHistory;
 
+use Beliven\PasswordHistory\Exceptions\PasswordAlreadyHashedException;
 use Beliven\PasswordHistory\Exceptions\PasswordInHistoryException;
 use Beliven\PasswordHistory\Models\PasswordHash;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +42,10 @@ class PasswordHistory
     public function addPasswordToHistory(Model $model, string $newPassword): ?PasswordHash
     {
         $historyDepth = config('password-history.depth');
+
+        if (Hash::isHashed($newPassword)) {
+            throw new PasswordAlreadyHashedException;
+        }
 
         if ($this->hasPasswordInHistory($model, $newPassword)) {
             throw new PasswordInHistoryException;

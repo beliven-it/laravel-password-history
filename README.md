@@ -66,15 +66,6 @@ $user->password = $password_from_request;
 $user->save();
 ```
 
-or instead use the trait method `addPasswordInHistory` like below:
-
-```php
-$user->addPasswordInHistory($password_from_request);
-```
-
-Both of these methods throws an exception if the password is already in the history. So make sure to catch it.
-
-
 You can also use a rule in your request validation:
 
 ```php
@@ -118,6 +109,22 @@ class UpdatePasswordRequest extends FormRequest
 }
 ```
 
+> **Warning!!**:
+> For password checking is important to **provide the plain text password** and **NOT the hashed password**.
+> otherwise an exception will be thrown. 
+> Make sure to check your code before using this package.
+
+```php
+<?php
+
+# Allowed
+$user->password = 'password';
+
+# Not allowed
+$user->password = Hash::make('password');
+
+# This throw an exception of type PasswordAlreadyHashedException
+```
 
 ## Testing
 

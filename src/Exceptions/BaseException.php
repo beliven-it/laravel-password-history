@@ -6,6 +6,7 @@ use Beliven\PasswordHistory\Entities\Enums\DomainErrorsEnum;
 use Exception;
 use Illuminate\Http\Request;
 
+// @codeCoverageIgnoreStart
 class BaseException extends Exception
 {
     public function __construct(DomainErrorsEnum $error, string $message = '')
@@ -28,3 +29,4 @@ class BaseException extends Exception
         abort($this->getCode(), $this->getMessage());
     }
 }
+// @codeCoverageIgnoreEnd

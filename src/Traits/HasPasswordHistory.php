@@ -3,16 +3,22 @@
 namespace Beliven\PasswordHistory\Traits;
 
 use Beliven\PasswordHistory\PasswordHistory as PasswordHistoryService;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 trait HasPasswordHistory
 {
     protected string $password_field_column = 'password';
 
     private static ?string $plain_text_password = null;
+
+    protected function casts(): array
+    {
+        return [
+            ...parent::casts(),
+            $this->password_field_column => 'hashed',
+        ];
+    }
 
     protected static function bootHasPasswordHistory(): void
     {
@@ -25,16 +31,11 @@ trait HasPasswordHistory
         });
     }
 
-    public function password(): Attribute
+    protected function castAttributeAsHashedString($key, $value): string
     {
-        return Attribute::make(
-            set: function ($value) {
-                self::$plain_text_password = $value;
-                $hash = Hash::make($value);
+        self::$plain_text_password = $value;
 
-                return $hash;
-            }
-        );
+        return parent::castAttributeAsHashedString($key, $value);
     }
 
     public function hasPasswordInHistory(string $newPassword): bool
@@ -44,21 +45,11 @@ trait HasPasswordHistory
         return $passwordHistoryService->hasPasswordInHistory($this, $newPassword);
     }
 
-    public function addPasswordInHistory(string $newPassword): void
+    protected function savePasswordInHistory(string $newPassword): void
     {
-        $this->savePasswordInHistory($newPassword);
-    }
-
-    protected function savePasswordInHistory(string $newPassword, bool $explicit = true): void
-    {
-        DB::transaction(function () use ($newPassword, $explicit) {
+        DB::transaction(function () use ($newPassword) {
             $passwordHistoryService = new PasswordHistoryService;
             $passwordEntry = $passwordHistoryService->addPasswordToHistory($this, $newPassword);
-
-            if ($explicit) {
-                $this[$this->password_field_column] = $passwordEntry->hash;
-                $this->save();
-            }
         });
     }
 
@@ -68,7 +59,7 @@ trait HasPasswordHistory
             return;
         }
 
-        $model->savePasswordInHistory(self::$plain_text_password, false);
+        $model->savePasswordInHistory(self::$plain_text_password);
     }
 
     private static function handleUpdating(Model $model): void
@@ -81,6 +72,6 @@ trait HasPasswordHistory
             return;
         }
 
-        $model->savePasswordInHistory(self::$plain_text_password, false);
+        $model->savePasswordInHistory(self::$plain_text_password);
     }
 }

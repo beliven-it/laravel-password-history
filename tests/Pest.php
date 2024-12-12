@@ -15,7 +15,7 @@ class TestModel extends Model
     protected $table = 'test_models';
 }
 
-class TestModelWihTrait extends Model
+class TestModelWithTrait extends Model
 {
     use HasPasswordHistory;
 
