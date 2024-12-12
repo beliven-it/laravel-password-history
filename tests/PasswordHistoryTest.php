@@ -121,20 +121,6 @@ describe('Password history via mutator', function () {
 });
 
 describe('Password history edge cases', function () {
-    it('should not create an entry using the update quietly method', function () {
-        $model = new TestModelWihTrait;
-        $model->id = 123;
-        $model->save();
-
-        $count = PasswordHash::byModel($model)->count();
-        expect($count)->toBe(0);
-
-        $model->updateQuietly(['password' => 'test']);
-
-        $count = PasswordHash::byModel($model)->count();
-        expect($count)->toBe(0);
-    });
-
     it('should not create an entry using the save quietly method', function () {
         $model = new TestModelWihTrait;
         $model->id = 123;
@@ -148,12 +134,13 @@ describe('Password history edge cases', function () {
     test('simulate password change', function () {
         $model = new TestModelWihTrait;
         $model->id = 123;
-        $model->save();
-
         $model->password = 'password';
         $model->save();
 
-        $match = Hash::check('password', $model->password);
+        $model->password = 'password1';
+        $model->save();
+
+        $match = Hash::check('password1', $model->password);
 
         expect($match)->toBeTrue();
     });

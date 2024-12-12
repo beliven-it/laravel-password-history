@@ -16,12 +16,11 @@ trait HasPasswordHistory
 
     protected static function bootHasPasswordHistory(): void
     {
-        static::saving(function ($model) {
-            if (is_null($model->id)) {
-                self::handleCreating($model);
+        static::created(function ($model) {
+            self::handleCreating($model);
+        });
 
-                return;
-            }
+        static::updated(function ($model) {
             self::handleUpdating($model);
         });
     }
