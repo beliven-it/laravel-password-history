@@ -110,6 +110,7 @@ class UpdatePasswordRequest extends FormRequest
 ```
 
 > **Warning!!**:
+>
 > For password checking is important to **provide the plain text password** and **NOT the hashed password**.
 > otherwise an exception will be thrown. 
 > Make sure to check your code before using this package.
