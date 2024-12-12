@@ -25,9 +25,7 @@ class PasswordHistory
 
     public function hasPasswordInHistory(Model $model, string $newPassword): bool
     {
-        $listOfPasswords = PasswordHash::query()
-            ->whereHasMorph('model', $model::class)
-            ->get();
+        $listOfPasswords = PasswordHash::byModel($model)->get();
 
         foreach ($listOfPasswords as $password) {
             $hash = $password->getAttribute('hash');

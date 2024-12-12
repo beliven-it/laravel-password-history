@@ -20,7 +20,7 @@ trait HasPasswordHistory
             self::handleCreating($model);
         });
 
-        static::updated(function ($model) {
+        static::updating(function ($model) {
             self::handleUpdating($model);
         });
     }
@@ -64,12 +64,20 @@ trait HasPasswordHistory
 
     private static function handleCreating(Model $model): void
     {
+        if (is_null(self::$plain_text_password)) {
+            return;
+        }
+
         $model->savePasswordInHistory(self::$plain_text_password, false);
     }
 
     private static function handleUpdating(Model $model): void
     {
         if (!$model->isDirty($model->password_field_column)) {
+            return;
+        }
+
+        if (is_null(self::$plain_text_password)) {
             return;
         }
 
