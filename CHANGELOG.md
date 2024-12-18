@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-password-history` will be documented in this file.
 
+## 1.0.5 - 2024-12-18
+
+improve test coverage and fix issue related to usage of static class properties
+
 ## 1.0.4 - 2024-12-12
 
 Improve test coverage and remove unused methods and assets
