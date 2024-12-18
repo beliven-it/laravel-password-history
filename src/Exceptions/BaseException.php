@@ -11,7 +11,7 @@ class BaseException extends Exception
 {
     public function __construct(DomainErrorsEnum $error, string $message = '')
     {
-        $value = $error->value;
+        $value = $error->message();
         if (!empty($message)) {
             $value = $message;
         }

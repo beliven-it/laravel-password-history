@@ -1,5 +1,6 @@
 <?php
 
+use Beliven\PasswordHistory\Entities\Enums\DomainErrorsEnum;
 use Beliven\PasswordHistory\Exceptions\PasswordAlreadyHashedException;
 use Beliven\PasswordHistory\Exceptions\PasswordInHistoryException;
 use Beliven\PasswordHistory\Models\PasswordHash;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 beforeEach(function () {
     $this->passwordHistory = new PasswordHistory;
 
+    DB::table('password_hashes')->truncate();
     Config::set('password-history.depth', 5);
 });
 
@@ -60,7 +62,7 @@ describe('Password history methods', function () {
         $passwordHash->save();
 
         $this->passwordHistory->addPasswordToHistory($model, $existingPassword);
-    })->throws(PasswordInHistoryException::class);
+    })->throws(PasswordInHistoryException::class, DomainErrorsEnum::PASSWORD_IN_HISTORY->message());
 
     it('removes the oldest password when history depth is exceeded', function () {
         $model = TestModel::create();
@@ -143,7 +145,7 @@ describe('Password history via mutator', function () {
 
         $model->password = 'password';
         $model->save();
-    })->throws(PasswordInHistoryException::class);
+    })->throws(PasswordInHistoryException::class, DomainErrorsEnum::PASSWORD_IN_HISTORY->message());
 
     it('shoud not create a password history entry using quietly methods', function () {
         $model = new TestModelWithTrait;
@@ -179,7 +181,52 @@ describe('Password history edge cases', function () {
         $model->password = $passwordHash;
         $model->id = 123;
         $model->save();
-    })->throws(PasswordAlreadyHashedException::class);
+    })->throws(PasswordAlreadyHashedException::class, DomainErrorsEnum::PASSWORD_ALREADY_HASHED->message());
+
+    it('should not save any history hash using null value', function () {
+        $model = new TestModelWithTrait;
+        $model->id = 388888;
+        $model->password = null;
+        $model->save();
+
+        $this->assertDatabaseMissing('password_hashes', [
+            'model_type' => get_class($model),
+            'model_id'   => $model->id,
+        ]);
+
+        // In a real application, the database will throw an error because the password field is not nullable
+        expect($model->password)->toBeNull();
+    });
+
+    it('should not save any history hash updating another model property', function () {
+        $model = new TestModelWithTrait;
+        $model->id = 388888;
+        $model->name = 'test';
+        $model->save();
+
+        $model->name = 'test1';
+        $model->save();
+
+        $this->assertDatabaseMissing('password_hashes', [
+            'model_type' => get_class($model),
+            'model_id'   => $model->id,
+        ]);
+    });
+
+    it('should not save any history hash updating to null the password property', function () {
+        $model = new TestModelWithTrait;
+        $model->id = 388888;
+        $model->name = 'test';
+        $model->save();
+
+        $model->password = null;
+        $model->save();
+
+        $this->assertDatabaseMissing('password_hashes', [
+            'model_type' => get_class($model),
+            'model_id'   => $model->id,
+        ]);
+    });
 
 });
 
@@ -193,7 +240,7 @@ describe('Validation Rule', function () {
         $rule = new HasPasswordInHistory($model);
 
         $rule->validate('password', 'password', function ($message) {
-            expect($message)->toBe('Password already in history');
+            expect($message)->toBe(DomainErrorsEnum::PASSWORD_IN_HISTORY->message());
         });
     });
 });

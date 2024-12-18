@@ -13,7 +13,7 @@ class HasPasswordInHistory implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (method_exists($this->model, 'hasPasswordInHistory') && $this->model->hasPasswordInHistory($value)) {
-            $fail(__('Password already in history'));
+            $fail(trans('Password already in history'));
         }
     }
 }

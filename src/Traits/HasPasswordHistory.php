@@ -3,14 +3,13 @@
 namespace Beliven\PasswordHistory\Traits;
 
 use Beliven\PasswordHistory\PasswordHistory as PasswordHistoryService;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 trait HasPasswordHistory
 {
     protected string $password_field_column = 'password';
 
-    private static ?string $plain_text_password = null;
+    private ?string $plain_text_password = null;
 
     protected function traitCasts(): array
     {
@@ -27,17 +26,17 @@ trait HasPasswordHistory
     protected static function bootHasPasswordHistory(): void
     {
         static::created(function ($model) {
-            self::handleCreating($model);
+            $model->handleCreating();
         });
 
         static::updating(function ($model) {
-            self::handleUpdating($model);
+            $model->handleUpdating();
         });
     }
 
     protected function castAttributeAsHashedString($key, $value): string
     {
-        self::$plain_text_password = $value;
+        $this->plain_text_password = $value;
 
         return parent::castAttributeAsHashedString($key, $value);
     }
@@ -57,25 +56,25 @@ trait HasPasswordHistory
         });
     }
 
-    private static function handleCreating(Model $model): void
+    protected function handleCreating(): void
     {
-        if (is_null(self::$plain_text_password)) {
+        if (is_null($this->plain_text_password)) {
             return;
         }
 
-        $model->savePasswordInHistory(self::$plain_text_password);
+        $this->savePasswordInHistory($this->plain_text_password);
     }
 
-    private static function handleUpdating(Model $model): void
+    protected function handleUpdating(): void
     {
-        if (!$model->isDirty($model->password_field_column)) {
+        if (!$this->isDirty($this->password_field_column)) {
             return;
         }
 
-        if (is_null(self::$plain_text_password)) {
+        if (is_null($this->plain_text_password)) {
             return;
         }
 
-        $model->savePasswordInHistory(self::$plain_text_password);
+        $this->savePasswordInHistory($this->plain_text_password);
     }
 }

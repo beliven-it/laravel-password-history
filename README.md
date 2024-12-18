@@ -1,9 +1,9 @@
 # Laravel Password History
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/beliven-it/laravel-password-history.svg?style=flat-square)](https://packagist.org/packages/beliven-it/laravel-password-history)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/beliven-it/laravel-password-history/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/beliven-it/laravel-password-history/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/beliven-it/laravel-password-history/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/beliven-it/laravel-password-history/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/beliven-it/laravel-password-history.svg?style=flat-square)](https://packagist.org/packages/beliven-it/laravel-password-history)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/beliven-it/laravel-password-history.svg?style=for-the-badge&labelColor=2a2c2e&color=0fbccd)](https://packagist.org/packages/beliven-it/laravel-password-history)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/beliven-it/laravel-password-history/run-tests.yml?branch=main&label=tests&style=for-the-badge&labelColor=2a2c2e&color=0fbccd)](https://github.com/beliven-it/laravel-password-history/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/beliven-it/laravel-password-history/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=for-the-badge&labelColor=2a2c2e&color=0fbccd)](https://github.com/beliven-it/laravel-password-history/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/beliven-it/laravel-password-history.svg?style=for-the-badge&labelColor=2a2c2e&color=0fbccd)](https://packagist.org/packages/beliven-it/laravel-password-history)
 
 This package allows you to keep track of the last passwords used by a user.
 
