@@ -1,7 +1,7 @@
 # Laravel Password History
 
 <br>
-<p align="center"><img src="./repo/banner.svg" /></p>
+<p align="center"><img src="./repo/banner.png" /></p>
 <br>
 <p align="center">
 
