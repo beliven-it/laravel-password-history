@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-password-history` will be documented in this file.
 
+## 1.0.6 - 2024-12-21
+
+Fix getFacadeAccessor return type
+
 ## 1.0.5 - 2024-12-18
 
 improve test coverage and fix issue related to usage of static class properties
