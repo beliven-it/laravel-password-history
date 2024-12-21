@@ -3,6 +3,7 @@
 <br>
 <p align="center"><img src="./repo/banner.png" /></p>
 <br>
+    
 <p align="center">
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/beliven-it/laravel-password-history.svg?style=for-the-badge&labelColor=2a2c2e&color=0fbccd)](https://packagist.org/packages/beliven-it/laravel-password-history)
@@ -146,7 +147,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/beliven-it/.github/blob/main/CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
