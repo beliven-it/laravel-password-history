@@ -11,6 +11,6 @@ class PasswordHistory extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'laravel-password-history';
+        return \Beliven\PasswordHistory\PasswordHistory::class;
     }
 }

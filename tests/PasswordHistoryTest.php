@@ -3,6 +3,7 @@
 use Beliven\PasswordHistory\Entities\Enums\DomainErrorsEnum;
 use Beliven\PasswordHistory\Exceptions\PasswordAlreadyHashedException;
 use Beliven\PasswordHistory\Exceptions\PasswordInHistoryException;
+use Beliven\PasswordHistory\Facades\PasswordHistory as PasswordHistoryFacade;
 use Beliven\PasswordHistory\Models\PasswordHash;
 use Beliven\PasswordHistory\PasswordHistory;
 use Beliven\PasswordHistory\Rules\HasPasswordInHistory;
@@ -14,6 +15,15 @@ beforeEach(function () {
 
     DB::table('password_hashes')->truncate();
     Config::set('password-history.depth', 5);
+});
+
+describe('Password history facade', function () {
+    it('should use the facade', function () {
+        $model = TestModel::create();
+        $result = PasswordHistoryFacade::hasPasswordInHistory($model, 'password');
+
+        expect($result)->toBeFalse();
+    });
 });
 
 describe('Password history methods', function () {
