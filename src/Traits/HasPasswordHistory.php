@@ -2,7 +2,7 @@
 
 namespace Beliven\PasswordHistory\Traits;
 
-use Beliven\PasswordHistory\PasswordHistory as PasswordHistoryService;
+use Beliven\PasswordHistory\Facades\PasswordHistory;
 use Illuminate\Support\Facades\DB;
 
 trait HasPasswordHistory
@@ -43,16 +43,13 @@ trait HasPasswordHistory
 
     public function hasPasswordInHistory(string $newPassword): bool
     {
-        $passwordHistoryService = new PasswordHistoryService;
-
-        return $passwordHistoryService->hasPasswordInHistory($this, $newPassword);
+        return PasswordHistory::hasPasswordInHistory($this, $newPassword);
     }
 
     protected function savePasswordInHistory(string $newPassword): void
     {
         DB::transaction(function () use ($newPassword) {
-            $passwordHistoryService = new PasswordHistoryService;
-            $passwordEntry = $passwordHistoryService->addPasswordToHistory($this, $newPassword);
+            $passwordEntry = PasswordHistory::addPasswordToHistory($this, $newPassword);
         });
     }
 
