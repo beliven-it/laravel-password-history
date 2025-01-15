@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-password-history` will be documented in this file.
 
+## 1.1.0 - 2025-01-15
+
+### Refactor
+
+- Remove exception when a already hash password is provided
+
 ## 1.0.6 - 2024-12-21
 
 Fix getFacadeAccessor return type
