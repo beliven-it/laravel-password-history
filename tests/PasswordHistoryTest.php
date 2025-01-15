@@ -1,7 +1,6 @@
 <?php
 
 use Beliven\PasswordHistory\Entities\Enums\DomainErrorsEnum;
-use Beliven\PasswordHistory\Exceptions\PasswordAlreadyHashedException;
 use Beliven\PasswordHistory\Exceptions\PasswordInHistoryException;
 use Beliven\PasswordHistory\Facades\PasswordHistory as PasswordHistoryFacade;
 use Beliven\PasswordHistory\Models\PasswordHash;
@@ -191,7 +190,14 @@ describe('Password history edge cases', function () {
         $model->password = $passwordHash;
         $model->id = 123;
         $model->save();
-    })->throws(PasswordAlreadyHashedException::class, DomainErrorsEnum::PASSWORD_ALREADY_HASHED->message());
+
+        $this->assertDatabaseMissing('password_hashes', [
+            'model_type' => get_class($model),
+            'model_id'   => $model->id,
+        ]);
+
+        expect($model->password)->toBe($passwordHash);
+    });
 
     it('should not save any history hash using null value', function () {
         $model = new TestModelWithTrait;
