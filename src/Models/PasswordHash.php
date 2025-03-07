@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $id
  * @property string $hash
  *
- * @method static \Illuminate\Database\Eloquent\Builder|User byModel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasswordHash byModel($value): Builder
  */
 class PasswordHash extends Model
 {

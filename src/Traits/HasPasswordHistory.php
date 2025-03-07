@@ -5,6 +5,7 @@ namespace Beliven\PasswordHistory\Traits;
 use Beliven\PasswordHistory\Facades\PasswordHistory;
 use Illuminate\Support\Facades\DB;
 
+// @phpstan-ignore-next-line
 trait HasPasswordHistory
 {
     protected string $password_field_column = 'password';
