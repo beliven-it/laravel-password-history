@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-password-history` will be documented in this file.
 
+## 1.2.0 - 2025-03-07
+
+### What's Changed
+
+* chore(deps): bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/beliven-it/laravel-password-history/pull/2
+* chore(deps): bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/beliven-it/laravel-password-history/pull/3
+
+**Full Changelog**: https://github.com/beliven-it/laravel-password-history/compare/1.1.0...1.2.0
+
 ## 1.1.0 - 2025-01-15
 
 ### Refactor
