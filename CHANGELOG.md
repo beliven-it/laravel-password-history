@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-password-history` will be documented in this file.
 
+## 1.3.0 - 2026-06-22
+
+### What's Changed
+
+- Add support for PHP 8.5
+- Add support for Laravel 13 (`illuminate/contracts` `^13.0`)
+- Bump dev dependencies: `orchestra/testbench` `^11.0`, `pestphp/pest` `^4.0` (+ `pest-plugin-arch` / `pest-plugin-laravel` `^4.0`)
+- CI: add PHP 8.5 and Laravel 13 to the test matrix; run PHPStan on PHP 8.4
+
 ## 1.2.0 - 2025-03-07
 
 ### What's Changed
