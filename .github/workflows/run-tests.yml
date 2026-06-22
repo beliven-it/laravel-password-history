@@ -24,12 +24,15 @@ jobs:
           - laravel: 13.*
             testbench: 11.*
             carbon: ^3.10
+            pest: ^4.0
           - laravel: 12.*
             testbench: 10.*
             carbon: ^3.8
+            pest: ^3.0
           - laravel: 11.*
             testbench: 9.*
             carbon: ^2.63
+            pest: ^3.0
         exclude:
           # Laravel 13 requires PHP 8.3+
           - laravel: 13.*
@@ -55,7 +58,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.os == 'windows-latest' && '^^^' || '' }}${{ matrix.carbon }}" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.os == 'windows-latest' && '^^^' || '' }}${{ matrix.carbon }}" "pestphp/pest:${{ matrix.pest }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: List Installed Dependencies
